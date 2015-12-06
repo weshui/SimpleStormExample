@@ -15,7 +15,7 @@ public class CountTopology {
     public static void main(String[] args) throws Exception{
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("spout", new LineReaderSpout(), 10);
+        builder.setSpout("spout", new LineReaderSpout());
         builder.setBolt("split", new ExtractBolt()).shuffleGrouping("spout");
         builder.setBolt("count", new CumulateBolt()).fieldsGrouping("split", new Fields("word"));
         Config conf = new Config();
@@ -36,6 +36,8 @@ public class CountTopology {
             cluster.killTopology("test");
             cluster.shutdown();
         }
+
+
 
     }
 }

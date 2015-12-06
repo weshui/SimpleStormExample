@@ -2,8 +2,8 @@ package CountTopology;
 
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.IRichSpout;
 import backtype.storm.topology.OutputFieldsDeclarer;
+import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 
@@ -16,16 +16,17 @@ import java.util.Map;
 /**
  * Created by Wesley on 12/5/15.
  */
-public class LineReaderSpout implements IRichSpout {
+public class LineReaderSpout extends BaseRichSpout {
 
     private SpoutOutputCollector collector;
-    private FileReader fileReader;
-    private boolean completed = false;
+    private String fileName;
+    private BufferedReader reader;
 
     public void open(Map conf, TopologyContext context,
                      SpoutOutputCollector collector) {
         try {
-            this.fileReader = new FileReader(conf.get("inputFile").toString());
+            fileName = (String) conf.get("inputFile");
+            reader = new BufferedReader(new FileReader(fileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error reading file "
                     + conf.get("inputFile"));
@@ -34,50 +35,37 @@ public class LineReaderSpout implements IRichSpout {
     }
 
     public void nextTuple() {
-        if (completed) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-
-            }
-        }
-        String str;
-        BufferedReader reader = new BufferedReader(fileReader);
         try {
-            while ((str = reader.readLine()) != null) {
-                this.collector.emit(new Values(str), str);
+            String line = reader.readLine();
+            if (line != null) {
+                this.collector.emit(new Values(line));
+            } else {
+                System.out.println("Finished reading file!");
+                Thread.sleep(10000);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error reading typle", e);
-        } finally {
-            completed = true;
+            e.printStackTrace();
         }
 
     }
 
-    public void activate() {
+    @Override
+    public void ack(Object id) {
     }
 
+    @Override
     public void deactivate() {
+        try {
+            reader.close();
+        } catch (IOException e) {
+
+        }
     }
 
-    public Map<String, Object> getComponentConfiguration() {
-        return null;
-    }
-
-    public void ack(Object msgId) {
-    }
-
+    @Override
     public void fail(Object msgId) {
     }
 
-    public void close() {
-        try {
-            fileReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("line"));
