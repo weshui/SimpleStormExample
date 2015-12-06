@@ -37,7 +37,7 @@ public class CountTopology {
             cluster.shutdown();
         }
 
-
+        System.out.println("FUck u!");
 
     }
 }

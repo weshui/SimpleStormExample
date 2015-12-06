@@ -21,6 +21,7 @@ public class CumulateBolt extends BaseBasicBolt {
     public void prepare(Map stormConf,
                         TopologyContext context) {
         key = stormConf.get("key").toString();
+        System.out.println(key);
     }
 
 
