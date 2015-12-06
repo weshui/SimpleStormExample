@@ -8,6 +8,9 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,12 +19,19 @@ import java.util.Map;
  */
 public class CumulateBolt extends BaseBasicBolt {
     Map<String, Integer> counts = new HashMap<String, Integer>();
-    String key = new String();
+    String key;
+    String outPath;
+    PrintWriter out;
 
     public void prepare(Map stormConf,
                         TopologyContext context) {
         key = stormConf.get("key").toString();
-        System.out.println(key);
+        outPath = stormConf.get("outputFile").toString();
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(outPath, true)));
+        } catch(Exception e){
+
+        }
     }
 
 
@@ -33,9 +43,10 @@ public class CumulateBolt extends BaseBasicBolt {
         count++;
         counts.put(word, count);
         collector.emit(new Values(word, count));
-//        if(word.equals(key)){
+        if (word.equals(key)) {
             System.out.println("Currnet count: " + counts.get(key));
-//        }
+            out.print(counts.get(key));
+        }
     }
 
 

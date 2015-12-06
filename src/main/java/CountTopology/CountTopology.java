@@ -20,7 +20,8 @@ public class CountTopology {
         builder.setBolt("count", new CumulateBolt()).fieldsGrouping("split", new Fields("word"));
         Config conf = new Config();
         conf.put("inputFile", args[1]);
-        conf.put("key", args[2]);
+        conf.put("outputFile", args[2]);
+        conf.put("key", args[3]);
         conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 5);
 
         if (args != null && args.length > 0) {
