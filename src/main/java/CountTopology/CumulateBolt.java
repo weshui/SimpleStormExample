@@ -45,9 +45,9 @@ public class CumulateBolt extends BaseBasicBolt {
         collector.emit(new Values(word, count));
         if (word.equals(key)) {
             System.out.println("Currnet count: " + counts.get(key));
-            out.print(counts.get(key));
+//            out.print(counts.get(key));
         }
-        out.print(word);
+//        out.print(word);
     }
 
 

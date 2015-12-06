@@ -21,7 +21,7 @@ public class ExtractBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
-        _collector.emit(new Values(tuple.getString(0).split("\\s+")[1]));
+        _collector.emit(new Values(tuple.getString(0).split("\\s+")[2]));
         _collector.ack(tuple);
     }
 
