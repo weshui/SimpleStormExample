@@ -1,5 +1,6 @@
 package CountTopology;
 
+import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
@@ -15,6 +16,12 @@ import java.util.Map;
  */
 public class CumulateBolt extends BaseBasicBolt {
     Map<String, Integer> counts = new HashMap<String, Integer>();
+    String key = new String();
+
+    public void prepare(Map stormConf,
+                        TopologyContext context) {
+        key = stormConf.get("key").toString();
+    }
 
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
@@ -25,6 +32,9 @@ public class CumulateBolt extends BaseBasicBolt {
         count++;
         counts.put(word, count);
         collector.emit(new Values(word, count));
+        if(word.equals(key)){
+            System.out.println("Currnet count: " + counts.get(key));
+        }
     }
 
 
