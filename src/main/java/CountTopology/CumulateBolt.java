@@ -47,7 +47,7 @@ public class CumulateBolt extends BaseBasicBolt {
             System.out.println("Currnet count: " + counts.get(key));
             out.print(counts.get(key));
         }
-        out.print("WFT");
+        out.print(word);
     }
 
 
