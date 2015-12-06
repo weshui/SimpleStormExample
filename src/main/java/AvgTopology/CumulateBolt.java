@@ -21,7 +21,6 @@ public class CumulateBolt extends BaseBasicBolt {
     Map<String, Integer> counts = new HashMap<String, Integer>();
 
 
-
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         String word = tuple.getString(0);
         Integer count = counts.get(word);

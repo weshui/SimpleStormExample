@@ -19,20 +19,6 @@ import java.util.Map;
  */
 public class CumulateBolt extends BaseBasicBolt {
     Map<String, Integer> counts = new HashMap<String, Integer>();
-    String outPath;
-    PrintWriter out;
-    Long counter;
-
-    public void prepare(Map stormConf,
-                        TopologyContext context) {
-        outPath = stormConf.get("outputFile").toString();
-        counter = 0L;
-        try {
-            out = new PrintWriter(new BufferedWriter(new FileWriter(outPath, true)));
-        } catch(Exception e){
-
-        }
-    }
 
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
@@ -41,11 +27,9 @@ public class CumulateBolt extends BaseBasicBolt {
         if (count == null)
             count = 0;
         count++;
-        counter++;
         counts.put(word, count);
         collector.emit(new Values(word, count));
 
-        out.print(counter + "\n");
     }
 
 
