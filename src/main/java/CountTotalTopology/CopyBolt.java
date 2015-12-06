@@ -21,7 +21,7 @@ public class CopyBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
-        _collector.emit(new Values(tuple.getString(0)));
+        _collector.emit(new Values(tuple.getString(0).split("\\s")[2]));
         _collector.ack(tuple);
     }
 

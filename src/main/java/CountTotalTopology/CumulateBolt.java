@@ -45,7 +45,7 @@ public class CumulateBolt extends BaseBasicBolt {
         counts.put(word, count);
         collector.emit(new Values(word, count));
 
-        out.print(counter);
+        out.print(counter + "\n");
     }
 
 
