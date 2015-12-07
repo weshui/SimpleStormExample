@@ -57,6 +57,7 @@ public class CumulateBolt extends BaseBasicBolt {
     }
 
     public void cleanup(){
+        out.print(" storm");
         Iterator it = counts.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
