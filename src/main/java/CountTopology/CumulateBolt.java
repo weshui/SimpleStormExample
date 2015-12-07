@@ -26,7 +26,7 @@ public class CumulateBolt extends BaseBasicBolt {
 
     public void prepare(Map stormConf,
                         TopologyContext context) {
-        key = stormConf.get("key").toString();
+        key = stormConf.get("key").toString().trim();
         outPath = stormConf.get("outputFile").toString();
         try {
             out = new PrintWriter(new BufferedWriter(new FileWriter(outPath, true)));
@@ -44,7 +44,7 @@ public class CumulateBolt extends BaseBasicBolt {
         count++;
         counts.put(word, count);
         collector.emit(new Values(word, count));
-        if (word.equals(key)) {
+        if (word.trim().equals(key)) {
             System.out.println("Currnet count: " + counts.get(key));
             out.print(counts.get(key) + "\n");
         }
