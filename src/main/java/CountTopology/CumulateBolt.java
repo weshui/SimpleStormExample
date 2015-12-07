@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -56,6 +57,11 @@ public class CumulateBolt extends BaseBasicBolt {
     }
 
     public void cleanup(){
-        out.print(counts.get(key) + "\n");
+        Iterator it = counts.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            out.print(counts.get(pair.getKey()) + "\n");
+            it.remove(); // avoids a ConcurrentModificationException
+        }
     }
 }
