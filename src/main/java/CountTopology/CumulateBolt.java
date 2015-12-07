@@ -49,6 +49,7 @@ public class CumulateBolt extends BaseBasicBolt {
             out.print(counts.get(key) + "\n");
         }
 //        out.print(word);
+        out.print("test");
     }
 
 
@@ -60,7 +61,7 @@ public class CumulateBolt extends BaseBasicBolt {
         out.print(" storm");
         Iterator it = counts.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
+            Map.Entry pair = (Map.Entry) it.next();
             out.print(counts.get(pair.getKey()) + "\n");
             it.remove(); // avoids a ConcurrentModificationException
         }
