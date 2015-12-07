@@ -49,7 +49,7 @@ public class CumulateBolt extends BaseBasicBolt {
             out.print(counts.get(key) + "\n");
         }
 //        out.print(word);
-        out.print("test");
+        out.print(counts.get("904") + "\n");
     }
 
 
